@@ -2,6 +2,8 @@ package com.aswin.habitrack.controller;
 
 import com.aswin.habitrack.model.User;
 import com.aswin.habitrack.repository.UserRepository;
+
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,4 +28,10 @@ public class UserController {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    @GetMapping("/me")
+    public String getCurrentUser(Authentication auth) {
+        return "Hello, " + (auth != null ? auth.getName() : "401 Unauthorized");
+    }
+
 }

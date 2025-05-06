@@ -46,7 +46,6 @@ public class AuthController {
 
         if (userOpt.isPresent() && passwordEncoder.matches(authRequest.getPassword(), userOpt.get().getPassword())) {
             String token = jwtUtil.generateToken(authRequest.getUsername());
-            System.out.println("logged in");
             return new AuthResponse(token);
         }
         throw new RuntimeException();
