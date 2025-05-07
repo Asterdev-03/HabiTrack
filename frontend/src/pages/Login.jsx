@@ -14,7 +14,8 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto py-4 space-y-4">
+      <p>Login Form</p>
       <input
         className="w-full p-2 border rounded"
         placeholder="Username"

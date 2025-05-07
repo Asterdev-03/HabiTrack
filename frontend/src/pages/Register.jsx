@@ -1,17 +1,20 @@
 import { useState } from "react";
 import api from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [form, setForm] = useState({ username: "", password: "" });
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     await api.post("/auth/register", form);
-    alert("Registered. Now login.");
+    navigate("/login");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto space-y-4">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto py-4 space-y-4">
+      <p>Register Form</p>
       <input
         className="w-full p-2 border rounded"
         placeholder="Username"
