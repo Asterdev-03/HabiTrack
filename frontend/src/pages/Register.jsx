@@ -18,11 +18,13 @@ export default function Register() {
       <input
         className="w-full p-2 border rounded"
         placeholder="Username"
+        value={form.username}
         onChange={(e) => setForm({ ...form, username: e.target.value })}
       />
       <input
         className="w-full p-2 border rounded"
         type="password"
+        value={form.password}
         placeholder="Password"
         onChange={(e) => setForm({ ...form, password: e.target.value })}
       />

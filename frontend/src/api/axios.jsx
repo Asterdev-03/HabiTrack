@@ -17,6 +17,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response.status == 401) {
       console.log(" Log out the user by removing token. Redirect to login");
+      alert(error);
       localStorage.removeItem("token"); // Remove expired token
       window.location.href = "/login"; // Redirect to login
     }
