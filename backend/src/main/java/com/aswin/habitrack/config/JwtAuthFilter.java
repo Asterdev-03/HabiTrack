@@ -43,6 +43,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } catch (Exception e) {
                 // Invalid token
+                System.out.print("Not Loggedd in");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
