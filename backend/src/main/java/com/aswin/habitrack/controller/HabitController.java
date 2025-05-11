@@ -3,6 +3,9 @@ package com.aswin.habitrack.controller;
 import com.aswin.habitrack.dto.HabitRequest;
 import com.aswin.habitrack.dto.HabitResponse;
 import com.aswin.habitrack.service.HabitService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +23,8 @@ public class HabitController {
 
     // Create habit
     @PostMapping
-    public HabitResponse createHabit(@RequestBody HabitRequest habit, Authentication auth) {
-        return habitService.createHabitForUser(habit, auth.getName());
+    public HabitResponse createHabit(@RequestBody @Valid HabitRequest habitRequest, Authentication auth) {
+        return habitService.createHabitForUser(habitRequest, auth.getName());
     }
 
     // Get habits
