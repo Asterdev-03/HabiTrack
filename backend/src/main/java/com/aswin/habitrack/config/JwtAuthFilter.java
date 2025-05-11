@@ -1,6 +1,10 @@
 package com.aswin.habitrack.config;
 
+import com.aswin.habitrack.exception.JwtAuthenticationException;
 import com.aswin.habitrack.util.JwtUtil;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,12 +45,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-            } catch (Exception e) {
-                // Invalid token
-                System.out.print("Not Loggedd in");
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
+            } catch (ExpiredJwtException e) {
+                throw new JwtAuthenticationException("User session expired. Please login again.");
+            } catch (JwtException e) {
+                throw new JwtAuthenticationException("Invalid token. Please login again.");
             }
+            // catch (Exception e) {
+            // // Invalid token
+            // System.out.print("Not Loggedd in");
+            // response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            // return;
+            // }
         }
 
         filterChain.doFilter(request, response);
