@@ -9,7 +9,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     await api.post("/auth/register", form);
-    navigate("/login");
+    navigate("/");
   };
 
   return (
