@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aswin.habitrack.model.AuthRequest;
-import com.aswin.habitrack.model.AuthResponse;
+import com.aswin.habitrack.dto.AuthRequest;
+import com.aswin.habitrack.dto.AuthResponse;
 import com.aswin.habitrack.model.User;
 import com.aswin.habitrack.repository.UserRepository;
 import com.aswin.habitrack.util.JwtUtil;

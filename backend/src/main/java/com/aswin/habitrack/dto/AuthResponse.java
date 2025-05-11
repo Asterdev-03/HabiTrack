@@ -1,4 +1,4 @@
-package com.aswin.habitrack.model;
+package com.aswin.habitrack.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

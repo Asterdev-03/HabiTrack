@@ -1,6 +1,7 @@
 package com.aswin.habitrack.controller;
 
-import com.aswin.habitrack.model.Habit;
+import com.aswin.habitrack.dto.HabitRequest;
+import com.aswin.habitrack.dto.HabitResponse;
 import com.aswin.habitrack.service.HabitService;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,13 @@ public class HabitController {
 
     // Create habit
     @PostMapping
-    public Habit createHabit(@RequestBody Habit habit, Authentication auth) {
+    public HabitResponse createHabit(@RequestBody HabitRequest habit, Authentication auth) {
         return habitService.createHabitForUser(habit, auth.getName());
     }
 
     // Get habits
     @GetMapping
-    public List<Habit> getHabits(Authentication auth) {
+    public List<HabitResponse> getHabits(Authentication auth) {
         return habitService.getHabitsForUser(auth.getName());
     }
 

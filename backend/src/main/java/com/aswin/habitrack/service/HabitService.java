@@ -1,5 +1,7 @@
 package com.aswin.habitrack.service;
 
+import com.aswin.habitrack.dto.HabitRequest;
+import com.aswin.habitrack.dto.HabitResponse;
 import com.aswin.habitrack.model.Habit;
 import com.aswin.habitrack.model.User;
 import com.aswin.habitrack.repository.HabitRepository;
@@ -20,18 +22,27 @@ public class HabitService {
     }
 
     // Fetch habits for a user
-    public List<Habit> getHabitsForUser(String username) {
+    public List<HabitResponse> getHabitsForUser(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        return habitRepository.findByUser(user);
+        return habitRepository
+                .findByUser(user)
+                .stream()
+                .map(h -> new HabitResponse(h.getId(), h.getName(), h.getDescription()))
+                .toList();
     }
 
     // Add a new habit for a user
-    public Habit createHabitForUser(Habit habit, String username) {
+    public HabitResponse createHabitForUser(HabitRequest request, String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Habit habit = new Habit();
+        habit.setName(request.getName());
+        habit.setDescription(request.getDescription());
         habit.setUser(user);
-        return habitRepository.save(habit);
+        Habit saved = habitRepository.save(habit);
+        return new HabitResponse(saved.getId(), saved.getName(), saved.getDescription());
     }
 
     // Delete a habit
