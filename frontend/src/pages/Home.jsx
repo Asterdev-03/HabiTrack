@@ -12,7 +12,11 @@ export default function Home() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await api.post("/habits", form);
+    try {
+      const res = await api.post("/habits", form);
+    } catch (error) {
+      alert(Object.values(error.response.data).join("\n"));
+    }
     setForm({ name: "", description: "" });
     fetchHabits();
   };
