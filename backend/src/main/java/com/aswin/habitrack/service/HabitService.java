@@ -2,6 +2,7 @@ package com.aswin.habitrack.service;
 
 import com.aswin.habitrack.dto.HabitRequest;
 import com.aswin.habitrack.dto.HabitResponse;
+import com.aswin.habitrack.exception.ResourceNotFoundException;
 import com.aswin.habitrack.model.Habit;
 import com.aswin.habitrack.model.User;
 import com.aswin.habitrack.repository.HabitRepository;
@@ -24,7 +25,8 @@ public class HabitService {
     // Fetch habits for a user
     public List<HabitResponse> getHabitsForUser(String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         return habitRepository
                 .findByUser(user)
                 .stream()
@@ -35,7 +37,7 @@ public class HabitService {
     // Add a new habit for a user
     public HabitResponse createHabitForUser(HabitRequest request, String username) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Habit habit = new Habit();
         habit.setName(request.getName());
@@ -48,7 +50,7 @@ public class HabitService {
     // Delete a habit
     public void deleteHabit(Long id, String username) {
         Habit habit = habitRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Habit not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Habit not found"));
         if (!habit.getUser().getUsername().equals(username)) {
             throw new RuntimeException("You can only delete your own habits");
         }

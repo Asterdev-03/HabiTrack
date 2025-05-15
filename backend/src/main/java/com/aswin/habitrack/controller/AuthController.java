@@ -1,7 +1,5 @@
 package com.aswin.habitrack.controller;
 
-import java.util.Optional;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aswin.habitrack.dto.AuthRequest;
 import com.aswin.habitrack.dto.AuthResponse;
+import com.aswin.habitrack.exception.UnauthorizedException;
 import com.aswin.habitrack.model.User;
 import com.aswin.habitrack.repository.UserRepository;
 import com.aswin.habitrack.util.JwtUtil;
@@ -42,12 +41,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest authRequest) {
-        Optional<User> userOpt = userRepo.findByUsername(authRequest.getUsername());
+        User user = userRepo.findByUsername(authRequest.getUsername())
+                .orElseThrow(() -> new UnauthorizedException("Invalid username or password"));
 
-        if (userOpt.isPresent() && passwordEncoder.matches(authRequest.getPassword(), userOpt.get().getPassword())) {
-            String token = jwtUtil.generateToken(authRequest.getUsername());
-            return new AuthResponse(token);
+        if (!passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
+            throw new UnauthorizedException("Invalid username or password");
         }
-        throw new RuntimeException();
+
+        String token = jwtUtil.generateToken(user.getUsername());
+        return new AuthResponse(token);
     }
 }
